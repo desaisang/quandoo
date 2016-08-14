@@ -22,11 +22,18 @@ public class TableListLoader extends AsyncTask<String, Void, List<Boolean>>{
 
     private TableListListener mTableListListener;
 
+    /**
+     * callback interface
+     */
     public interface TableListListener {
         public void onSuccess(List<Boolean> tableBookingList);
         public void onError(Exception e);
     }
 
+    /**
+     * Constructor
+     * @param tableListListener callback instance
+     */
     public TableListLoader(TableListListener tableListListener) {
         mTableListListener = tableListListener;
     }

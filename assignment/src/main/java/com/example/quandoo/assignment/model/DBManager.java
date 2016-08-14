@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class manages the database operations for OFFLINE access.
+ * This singleton class manages the database operations for OFFLINE access.
  * This class is responsible for insertion/retrieval of the data from database
  */
 public class DBManager {
@@ -27,6 +27,10 @@ public class DBManager {
 
     }
 
+    /**
+     * This method returns the DBManager instance.
+     * @return DBManager object
+     */
     public static DBManager getDBManagerInstance() {
         if(mDBMgr == null) {
             mDBMgr = new DBManager();
@@ -34,15 +38,31 @@ public class DBManager {
         return mDBMgr;
     }
 
-    public DBManager openDB(Context cxt) throws SQLException {
+    /**
+     * This method creates the database.
+     * @param cxt Context object
+     * @throws SQLException
+     */
+
+    public void openDB(Context cxt) throws SQLException {
         mDBHelper = new DBHelper(cxt);
         database = mDBHelper.getWritableDatabase();
-        return this;
     }
+
+    /**
+     * This method will close the database
+     */
 
     public void close() {
         mDBHelper.close();
     }
+
+    /**
+     * This method inserts the customer record in table.
+     * @param ID Customer ID
+     * @param firstName first name of customer
+     * @param lastName last name of customer
+     */
 
     public void insertCustomerRecord(String ID, String firstName, String lastName) {
         ContentValues contentValue = new ContentValues();
@@ -52,6 +72,11 @@ public class DBManager {
 
         database.insert(DBHelper.TABLE_NAME, null, contentValue);
     }
+
+    /**
+     * This method retrieves the list of customers from database table.
+     * @return List of customer objects
+     */
 
     public List<CustomerResponseJson> getCustomerNames() {
         String[] columns = new String[] {
@@ -77,6 +102,10 @@ public class DBManager {
         return customerList;
     }
 
+    /**
+     * This method inserts the booked table status in table database.
+     * @param isTableAvailable boolean value. true if the table is available for reservation
+     */
     public void insertBookedTableStatus(boolean isTableAvailable){
         ContentValues contentValue = new ContentValues();
         contentValue.put(DBHelper.BOOKED_STATUS, (isTableAvailable)?1:0);
@@ -84,6 +113,11 @@ public class DBManager {
         database.insert(DBHelper.BOOKING_TABLE_NAME, null, contentValue);
     }
 
+    /**
+     * This method returns the reservation status of all the tables.
+     * The status of a table is true if already reserved otherwise it is false.
+     * @return status list for all the tables
+     */
     public List<Boolean> getReservationStatus() {
         String[] columns = new String[] {DBHelper.BOOKED_STATUS};
 

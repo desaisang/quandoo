@@ -9,12 +9,17 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Class to manage the network operations.
+ * The module to which interacts with the android network system to get/send the data.
  */
 public class NetworkManager {
 
     private static String TAG = "NetworkManager";
 
+    /**
+     * The method interacts with the server to get the data.
+     * @param uri Server Url
+     * @return data in stream
+     */
     public static InputStream get(String uri) {
         URL url;
         InputStream in = null;

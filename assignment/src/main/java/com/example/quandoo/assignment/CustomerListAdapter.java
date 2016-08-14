@@ -34,14 +34,25 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
         }
     }
 
+    /**
+     * Callback interface for implementing the behavior when an item is clicked.
+     */
     public interface onClickListener{
         void onItemClick();
     }
 
+    /**
+     * Constructor
+     * @param onItemClickedListener onClickListener interface object
+     */
     public CustomerListAdapter(onClickListener onItemClickedListener) {
         mOnClickListener = onItemClickedListener;
     }
 
+    /**
+     * The setter method which sets the list of customers.
+     * @param dataSet the list of customers to be set.
+     */
     public void setData(List<CustomerResponseJson> dataSet) {
         mDataset = dataSet;
     }

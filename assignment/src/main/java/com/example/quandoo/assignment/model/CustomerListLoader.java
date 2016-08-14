@@ -24,12 +24,19 @@ public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerRes
 
     private DBManager mDBManager;
 
+    /**
+     * CallBack interface
+     */
     public interface CustomerListListener {
         void onSuccess(List<CustomerResponseJson> customerList);
         void onError(Exception e);
 
     }
 
+    /**
+     * Constructor
+     * @param listener callback listener
+     */
     public CustomerListLoader(CustomerListListener listener){
         mCustomerListListener = listener;
         mDBManager = DBManager.getDBManagerInstance();

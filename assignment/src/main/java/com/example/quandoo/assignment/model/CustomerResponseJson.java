@@ -15,6 +15,12 @@ public class CustomerResponseJson {
     @SerializedName("id")
     public String mID;
 
+    /**
+     * Constructor
+     * @param ID Customer ID
+     * @param firstName First name of the customer
+     * @param lastName last name of the customer
+     */
     public CustomerResponseJson(String ID, String firstName, String lastName) {
         mcustomerFirstName = firstName;
         mcustomerLastName = lastName;

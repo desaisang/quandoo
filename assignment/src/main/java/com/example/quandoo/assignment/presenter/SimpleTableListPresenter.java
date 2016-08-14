@@ -11,6 +11,9 @@ import java.util.List;
 
 /**
  * Concrete presenter class which is responsible for handling Table list screen.
+ * It is implemented as per MOSBY MVP design.
+ * http://hannesdorfmann.com/mosby/mvp/
+ *
  */
 public class SimpleTableListPresenter extends MvpBasePresenter<TableView> implements TableListPresenter{
     private static final String TAG = "SiTableListPresenter";

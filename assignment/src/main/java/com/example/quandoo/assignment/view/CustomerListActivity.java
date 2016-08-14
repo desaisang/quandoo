@@ -86,6 +86,10 @@ public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, Lis
         Toast.makeText(this, "please click on customer name to book the table", Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * The method gets the data from the presenter
+     * @param pullToRefresh
+     */
     public void loadData(boolean pullToRefresh) {
         presenter.loadCustomers(urlString);
     }

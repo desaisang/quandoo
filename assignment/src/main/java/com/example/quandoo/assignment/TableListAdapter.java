@@ -12,6 +12,9 @@ import com.example.quandoo.unittest.R;
 
 import java.util.List;
 
+/**
+ * Adapter class that binds the availability status of the tables with the recyclerview.
+ */
 public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.ViewHolder> {
 
     private List<Boolean> mDataset;
@@ -33,10 +36,17 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.View
 
         }
 
+        /**
+         * Callback interface for implementing the behavior when an item is clicked.
+         */
         public interface onClickInterface {
             void onItemClicked(View v);
         }
 
+        /**
+         * This method will be called when an item is clicked.
+         * @param v The View object that is clicked.
+         */
         @Override
         public void onClick(View v) {
             mOnClickInterfaceListener.onItemClicked(v);
@@ -71,15 +81,6 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.View
 
         holder.tableImage.setImageResource(R.mipmap.table);
         holder.tableImage.setTag(isTableAvailable);
-        /*holder.tableImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isavailable = (boolean)v.getTag();
-                if(isavailable) {
-
-                }
-            }
-        });*/
         if(isTableAvailable){
             holder.tableImage.setImageAlpha(200);
             holder.tableIndex.setBackgroundColor(Color.GREEN);

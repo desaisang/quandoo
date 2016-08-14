@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Concrete presenter class for handling the Customer list screen.
+ * It is implemented as per MOSBY MVP design.
+ * http://hannesdorfmann.com/mosby/mvp/
  */
 public class SimpleCustomerListPresenter extends MvpBasePresenter<CustomerView> implements CustomerListPresenter {
 
@@ -52,6 +54,11 @@ public class SimpleCustomerListPresenter extends MvpBasePresenter<CustomerView> 
         getView().moveToNextView();
     }
 
+    /**
+     * This method will insert the list of customers into database.
+     * The list is intially fetched from server.
+     * @param customerList list of CustomerResponseJson objects.
+     */
     private void insertCustomerListinDB(List<CustomerResponseJson> customerList) {
         DBManager databaseMgr = DBManager.getDBManagerInstance();
         for(CustomerResponseJson customer:customerList){
@@ -60,6 +67,11 @@ public class SimpleCustomerListPresenter extends MvpBasePresenter<CustomerView> 
 
     }
 
+    /**
+     * This method will ask network manager to get the list of customers from the network.
+     * @param url url of the server to get the list of customers.
+     * @return customer list stream
+     */
     private InputStream getCustomerListFromNetwork(String url) {
         return NetworkManager.get(url);
     }

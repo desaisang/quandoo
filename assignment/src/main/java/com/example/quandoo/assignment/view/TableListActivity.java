@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * The activity to display the table list screen. The tables are displayed in grid format
- * with red color being already reserved table and green being the available one.
+ * with red color denotes the already reserved table and green being the available one.
  * The blue color denotes the table reserved by the user.
  */
 public class TableListActivity extends MvpLceActivity<SwipeRefreshLayout, List<Boolean>, TableView, TableListPresenter>
@@ -67,6 +67,10 @@ public class TableListActivity extends MvpLceActivity<SwipeRefreshLayout, List<B
         loadData(true);
     }
 
+    /**
+     * The method gets the data from the presenter
+     * @param pullToRefresh
+     */
     public void loadData(boolean pullToRefresh) {
         presenter.loadTables(TABLE_STRING);
     }
