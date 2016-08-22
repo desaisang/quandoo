@@ -16,9 +16,9 @@ import java.util.List;
  * The class is asynctask responsible for loading the customer list from DB if available
  * otherwise it will fetch the list from the server.
  */
-public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerResponseJson>> {
+public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerResponse>> {
 
-    private ArrayList<CustomerResponseJson> mCustomerList;
+    private ArrayList<CustomerResponse> mCustomerList;
 
     private CustomerListListener mCustomerListListener;
 
@@ -28,7 +28,7 @@ public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerRes
      * CallBack interface
      */
     public interface CustomerListListener {
-        void onSuccess(List<CustomerResponseJson> customerList);
+        void onSuccess(List<CustomerResponse> customerList);
         void onError(Exception e);
 
     }
@@ -48,12 +48,12 @@ public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerRes
     }
 
     @Override
-    protected List<CustomerResponseJson> doInBackground(String... params) {
-        List<CustomerResponseJson> list = mDBManager.getCustomerNames();
+    protected List<CustomerResponse> doInBackground(String... params) {
+        List<CustomerResponse> list = mDBManager.getCustomerNames();
 
         if(list != null) {
             //The customer list is present in database.
-            mCustomerList = new ArrayList<CustomerResponseJson>(list);
+            mCustomerList = new ArrayList<CustomerResponse>(list);
             return mCustomerList;
             }
         //Get the list from Server
@@ -62,8 +62,8 @@ public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerRes
         if(ins != null) {
             Gson gsonParser = new Gson();
             Reader streamReader = new InputStreamReader(ins);
-            CustomerResponseJson[] crArray = gsonParser.fromJson(streamReader, CustomerResponseJson[].class);
-            mCustomerList = new ArrayList<CustomerResponseJson>(Arrays.asList(crArray));
+            CustomerResponse[] crArray = gsonParser.fromJson(streamReader, CustomerResponse[].class);
+            mCustomerList = new ArrayList<CustomerResponse>(Arrays.asList(crArray));
             return mCustomerList;
         }
         else {
@@ -72,7 +72,7 @@ public class CustomerListLoader extends AsyncTask<String, Void, List<CustomerRes
     }
 
     @Override
-    protected void onPostExecute(List<CustomerResponseJson> customerResponseJsons) {
+    protected void onPostExecute(List<CustomerResponse> customerResponseJsons) {
         super.onPostExecute(customerResponseJsons);
         if(customerResponseJsons != null && customerResponseJsons.size() > 0) {
             mCustomerListListener.onSuccess(customerResponseJsons);

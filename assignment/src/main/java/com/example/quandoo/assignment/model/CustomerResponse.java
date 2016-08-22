@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The class represents Json data
  */
-public class CustomerResponseJson {
+public class CustomerResponse {
     @SerializedName("customerFirstName")
-    public String mcustomerFirstName;
+    public String mCustomerFirstName;
 
     @SerializedName("customerLastName")
-    public String mcustomerLastName;
+    public String mCustomerLastName;
 
     @SerializedName("id")
     public String mID;
@@ -21,9 +21,9 @@ public class CustomerResponseJson {
      * @param firstName First name of the customer
      * @param lastName last name of the customer
      */
-    public CustomerResponseJson(String ID, String firstName, String lastName) {
-        mcustomerFirstName = firstName;
-        mcustomerLastName = lastName;
+    public CustomerResponse(String ID, String firstName, String lastName) {
+        mCustomerFirstName = firstName;
+        mCustomerLastName = lastName;
         mID = ID;
     }
 }

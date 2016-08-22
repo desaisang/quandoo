@@ -17,9 +17,12 @@ public class DBManager {
 
     private static DBManager mDBMgr;
 
-    private DBHelper mDBHelper;
+    public static final int TABLE_AVAILABLE = 1;
 
-    private Context mContext;
+    public static final int TABLE_RESERVED = 2;
+
+
+    private DBHelper mDBHelper;
 
     private SQLiteDatabase database;
 
@@ -78,65 +81,88 @@ public class DBManager {
      * @return List of customer objects
      */
 
-    public List<CustomerResponseJson> getCustomerNames() {
+    public List<CustomerResponse> getCustomerNames() {
         String[] columns = new String[] {
                 DBHelper.ID, DBHelper.FIRSTNAME, DBHelper.LASTNAME };
         Cursor cursor = database.query(DBHelper.TABLE_NAME,columns, null, null, null, null, null);
-        ArrayList<CustomerResponseJson> customerList = null;
+        ArrayList<CustomerResponse> customerList = null;
         if(cursor != null) {
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                customerList = new ArrayList<CustomerResponseJson>();
+                customerList = new ArrayList<CustomerResponse>();
 
                 while (cursor.moveToNext()) {
                     String ID = cursor.getString(cursor.getColumnIndex(DBHelper.ID));
                     String firstName = cursor.getString(cursor.getColumnIndex(DBHelper.FIRSTNAME));
                     String lastName = cursor.getString(cursor.getColumnIndex(DBHelper.LASTNAME));
 
-                    customerList.add(new CustomerResponseJson(ID, firstName, lastName));
+                    customerList.add(new CustomerResponse(ID, firstName, lastName));
                 }
             }
             cursor.close();
-            cursor = null;
         }
         return customerList;
     }
 
     /**
      * This method inserts the booked table status in table database.
-     * @param isTableAvailable boolean value. true if the table is available for reservation
+     * @param status boolean value. true if the table is available for reservation
      */
-    public void insertBookedTableStatus(boolean isTableAvailable){
+    public void insertTableBookingStatus(String ID, int status){
         ContentValues contentValue = new ContentValues();
-        contentValue.put(DBHelper.BOOKED_STATUS, (isTableAvailable)?1:0);
+        contentValue.put(DBHelper.ID, ID);
+        contentValue.put(DBHelper.BOOKED_STATUS, status);
 
         database.insert(DBHelper.BOOKING_TABLE_NAME, null, contentValue);
     }
 
     /**
+     * This method updates the booking status of a table when user clicks on it.
+     * @param ID table ID
+     * @param status true if the table needs to be set as booked false otherwise
+     */
+    public void updateTableBookingStatus(int ID, int status){
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DBHelper.BOOKED_STATUS, status);
+
+     database.update(DBHelper.BOOKING_TABLE_NAME, contentValue, "id = ?", new String[]{Integer.toString(ID)});
+    }
+    /**
      * This method returns the reservation status of all the tables.
      * The status of a table is true if already reserved otherwise it is false.
      * @return status list for all the tables
      */
-    public List<Boolean> getReservationStatus() {
+    public List<Integer> getReservationStatus() {
         String[] columns = new String[] {DBHelper.BOOKED_STATUS};
 
         Cursor cursor = database.query(DBHelper.BOOKING_TABLE_NAME,columns, null, null, null, null, null);
-        ArrayList<Boolean> bookingTableList = null;
+        ArrayList<Integer> bookingTableList = null;
         if(cursor != null) {
             if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                bookingTableList = new ArrayList<Boolean>();
+                bookingTableList = new ArrayList<Integer>();
 
                 while (cursor.moveToNext()) {
                     int bookedStatus = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOKED_STATUS));
-                    bookingTableList.add((bookedStatus == 1)?true:false);
+                   // bookingTableList.add((bookedStatus == 1)?true:false);
+                    bookingTableList.add(bookedStatus);
                 }
             }
             cursor.close();
-            cursor = null;
         }
         return bookingTableList;
+    }
+
+    /**
+     * This method resets the reservations made by the user
+     */
+    public void resetReservations() {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(DBHelper.BOOKED_STATUS, TABLE_AVAILABLE);
+
+        String whereClause = "booked_status=?";
+
+        database.update(DBHelper.BOOKING_TABLE_NAME, contentValue, whereClause, new String[]{Integer.toString(TABLE_RESERVED)});
+
     }
 }
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.quandoo.assignment.model.CustomerResponseJson;
+import com.example.quandoo.assignment.model.CustomerResponse;
 import com.example.quandoo.unittest.R;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapter.ViewHolder> {
 
-    private List<CustomerResponseJson> mDataset;
+    private List<CustomerResponse> mDataset;
 
     private onClickListener mOnClickListener;
 
@@ -53,7 +53,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
      * The setter method which sets the list of customers.
      * @param dataSet the list of customers to be set.
      */
-    public void setData(List<CustomerResponseJson> dataSet) {
+    public void setData(List<CustomerResponse> dataSet) {
         mDataset = dataSet;
     }
 
@@ -65,7 +65,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String name = mDataset.get(position).mcustomerFirstName;
+        final String name = mDataset.get(position).mCustomerFirstName;
         holder.firstName.setText(name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +74,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
             }
         });
         holder.customerID.setText(mDataset.get(position).mID);
-        holder.lastName.setText(mDataset.get(position).mcustomerLastName);
+        holder.lastName.setText(mDataset.get(position).mCustomerLastName);
     }
 
     @Override

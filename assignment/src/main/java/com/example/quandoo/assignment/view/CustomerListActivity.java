@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.quandoo.assignment.CustomerListAdapter;
-import com.example.quandoo.assignment.model.CustomerResponseJson;
+import com.example.quandoo.assignment.model.CustomerResponse;
 import com.example.quandoo.assignment.model.DBManager;
 import com.example.quandoo.assignment.presenter.CustomerListPresenter;
 import com.example.quandoo.assignment.presenter.SimpleCustomerListPresenter;
@@ -21,15 +21,16 @@ import java.util.List;
 /**
  * The activity to display the list of customers.
  */
-public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, List<CustomerResponseJson>, CustomerView, CustomerListPresenter>
+public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, List<CustomerResponse>, CustomerView, CustomerListPresenter>
         implements CustomerView, SwipeRefreshLayout.OnRefreshListener {
     private static String urlString = "https://s3-eu-west-1.amazonaws.com/quandoo-assessment/customer-list.json";
     private static String ERROR_MSG = "Oops! could not load data. Click here to try again.";
-    private RecyclerView mRecyclerView;
     private CustomerListAdapter mCustomerListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        RecyclerView recycler_view;
+
         super.onCreate(savedInstanceState);
         try {
             DBManager.getDBManagerInstance().openDB(this);
@@ -38,7 +39,7 @@ public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, Lis
         }
         setContentView(R.layout.customer_list);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.listrecyclerView);
+        recycler_view = (RecyclerView) findViewById(R.id.listrecyclerView);
         mCustomerListAdapter = new CustomerListAdapter(new CustomerListAdapter.onClickListener() {
             @Override
             public void onItemClick() {
@@ -47,10 +48,11 @@ public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, Lis
                 presenter.takeAction();
             }
         });
-        mRecyclerView.setAdapter(mCustomerListAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recycler_view.setAdapter(mCustomerListAdapter);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
         loadData(false);
+
     }
 
     @Override
@@ -60,7 +62,7 @@ public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, Lis
     }
 
     @Override
-    public void setData(List<CustomerResponseJson> data) {
+    public void setData(List<CustomerResponse> data) {
         mCustomerListAdapter.setData(data);
         mCustomerListAdapter.notifyDataSetChanged();
     }
@@ -88,7 +90,7 @@ public class CustomerListActivity extends MvpLceActivity<SwipeRefreshLayout, Lis
 
     /**
      * The method gets the data from the presenter
-     * @param pullToRefresh
+     * @param pullToRefresh true if pulled.
      */
     public void loadData(boolean pullToRefresh) {
         presenter.loadCustomers(urlString);

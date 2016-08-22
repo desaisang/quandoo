@@ -23,6 +23,11 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <receiver android:name="com.example.quandoo.assignment.ResetBookingWatcher$bookingReceiver" android:enabled="true">
+        <intent-filter>
+            <action android:name="intent_reset_booking"/>
+        </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

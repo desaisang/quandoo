@@ -1,6 +1,6 @@
 package com.example.quandoo.unittest;
 
-import com.example.quandoo.assignment.model.CustomerResponseJson;
+import com.example.quandoo.assignment.model.CustomerResponse;
 import com.example.quandoo.assignment.model.DBManager;
 
 import org.junit.Test;
@@ -14,10 +14,10 @@ public class DBMgrTest {
     public void testDBInsertion() {
         DBManager databaseManager = DBManager.getDBManagerInstance();
         databaseManager.insertCustomerRecord("1", "sangram", "desai");
-        List<CustomerResponseJson> customerList = databaseManager.getCustomerNames();
+        List<CustomerResponse> customerList = databaseManager.getCustomerNames();
 
-        assertEquals(customerList.get(0).mcustomerFirstName, "sangram");
-        assertEquals(customerList.get(0).mcustomerLastName, "desai");
+        assertEquals(customerList.get(0).mCustomerFirstName, "sangram");
+        assertEquals(customerList.get(0).mCustomerLastName, "desai");
 
     }
 }

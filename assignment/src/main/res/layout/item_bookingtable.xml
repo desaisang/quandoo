@@ -9,6 +9,20 @@
     card_view:cardCornerRadius="8dp"
     android:layout_marginBottom="16dp">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/reservedstatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="reserved"
+            android:src="@mipmap/reserved"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

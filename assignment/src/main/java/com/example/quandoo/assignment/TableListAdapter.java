@@ -17,79 +17,74 @@ import java.util.List;
  */
 public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.ViewHolder> {
 
-    private List<Boolean> mDataset;
-    private int mOldPosition = -1;
+    private List<Integer> mDataset;
+    onClickListener mOnClickListener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    public static class ViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/{
 
         public ImageView tableImage;
+        public ImageView reservedStatus;
         public TextView tableIndex;
-        public boolean isAvailable;
-        onClickInterface mOnClickInterfaceListener;
 
-        public ViewHolder(View v, onClickInterface onClickListener) {
+       // onClickInterface mOnClickInterfaceListener;
+
+        public ViewHolder(View v) {
             super(v);
-            mOnClickInterfaceListener = onClickListener;
             tableImage = (ImageView)v.findViewById(R.id.table_picture);
             tableIndex = (TextView)v.findViewById(R.id.table_index);
-            v.setOnClickListener(this);
-
+            reservedStatus = (ImageView)v.findViewById(R.id.reservedstatus);
         }
+    }
 
-        /**
-         * Callback interface for implementing the behavior when an item is clicked.
-         */
-        public interface onClickInterface {
-            void onItemClicked(View v);
-        }
+    /**
+     * Callback interface for implementing the behavior when an item is clicked.
+     */
+    public interface onClickListener{
+        void onItemClick(int position);
+    }
 
-        /**
-         * This method will be called when an item is clicked.
-         * @param v The View object that is clicked.
-         */
-        @Override
-        public void onClick(View v) {
-            mOnClickInterfaceListener.onItemClicked(v);
-        }
+    /**
+     * Constructor
+     * @param onItemClickedListener onClickListener interface object
+     */
+    public TableListAdapter(onClickListener onItemClickedListener) {
+        mOnClickListener = onItemClickedListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bookingtable, parent, false);
-        return new ViewHolder(v, new ViewHolder.onClickInterface() {
-            @Override
-            public void onItemClicked(View v) {
-                int position = (int)v.getTag();
-                boolean isTableAvailable = mDataset.get(position);
-                if(isTableAvailable){
-                    ((ImageView)v.findViewById(R.id.table_picture)).setImageAlpha(50);
-                    ((TextView)v.findViewById(R.id.table_index)).setBackgroundColor(Color.RED);
-                    mDataset.set(position, false);
-                }
-            }
-        });
+        return new ViewHolder(v);
     }
 
-    public void setData(List<Boolean> dataSet) {
+    public void setData(List<Integer> dataSet) {
         mDataset = dataSet;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        boolean isTableAvailable = mDataset.get(position);
+        int tableStatus = mDataset.get(position);
         holder.itemView.setTag(position);
 
+
         holder.tableImage.setImageResource(R.mipmap.table);
-        holder.tableImage.setTag(isTableAvailable);
-        if(isTableAvailable){
+        holder.tableImage.setTag(tableStatus);
+        if(tableStatus == 1){
             holder.tableImage.setImageAlpha(200);
             holder.tableIndex.setBackgroundColor(Color.GREEN);
-            holder.isAvailable = true;
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickListener.onItemClick((int)v.getTag());
+                }
+            });
         }
         else {
+            holder.reservedStatus.setVisibility((tableStatus == 0)?View.GONE:View.VISIBLE);
             holder.tableImage.setImageAlpha(50);
             holder.tableIndex.setBackgroundColor(Color.RED);
-            holder.isAvailable = false;
         }
         holder.tableIndex.setText(Integer.toString(position + 1));
     }

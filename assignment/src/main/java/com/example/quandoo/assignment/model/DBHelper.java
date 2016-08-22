@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + " TEXT, " + FIRSTNAME + " TEXT NOT NULL, " + LASTNAME + " TEXT NOT NULL);";
 
     private static final String CREATE_BOOKING_TABLE = "create table " + BOOKING_TABLE_NAME + "(" +
-            _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ BOOKED_STATUS + " INTEGER);";
+            ID + " TEXT, "+ BOOKED_STATUS + " INTEGER);";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

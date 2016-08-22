@@ -3,7 +3,7 @@ package com.example.quandoo.assignment.presenter;
 import android.util.Log;
 
 import com.example.quandoo.assignment.model.CustomerListLoader;
-import com.example.quandoo.assignment.model.CustomerResponseJson;
+import com.example.quandoo.assignment.model.CustomerResponse;
 import com.example.quandoo.assignment.model.DBManager;
 import com.example.quandoo.assignment.view.CustomerView;
 import com.example.quandoo.assignment.NetworkManager;
@@ -30,7 +30,7 @@ public class SimpleCustomerListPresenter extends MvpBasePresenter<CustomerView> 
 
         mCustomerListLoaderTask = new CustomerListLoader(new CustomerListLoader.CustomerListListener() {
             @Override
-            public void onSuccess(List<CustomerResponseJson> customerList) {
+            public void onSuccess(List<CustomerResponse> customerList) {
                 insertCustomerListinDB(customerList);
                 if (isViewAttached()) {
                     getView().setData(customerList);
@@ -57,12 +57,12 @@ public class SimpleCustomerListPresenter extends MvpBasePresenter<CustomerView> 
     /**
      * This method will insert the list of customers into database.
      * The list is intially fetched from server.
-     * @param customerList list of CustomerResponseJson objects.
+     * @param customerList list of CustomerResponse objects.
      */
-    private void insertCustomerListinDB(List<CustomerResponseJson> customerList) {
+    private void insertCustomerListinDB(List<CustomerResponse> customerList) {
         DBManager databaseMgr = DBManager.getDBManagerInstance();
-        for(CustomerResponseJson customer:customerList){
-            databaseMgr.insertCustomerRecord(customer.mID, customer.mcustomerFirstName, customer.mcustomerLastName);
+        for(CustomerResponse customer:customerList){
+            databaseMgr.insertCustomerRecord(customer.mID, customer.mCustomerFirstName, customer.mCustomerLastName);
         }
 
     }
